@@ -11,6 +11,7 @@ env/
 # --- PROJEKTIN OMA DATA ---
 data/seen_ads.json
 data/tori_games.json
+data/consoles.json
 
 # --- EDITORIT ---
 .vscode/

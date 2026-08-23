@@ -54,12 +54,28 @@ class GameMatcher:
             pc_clean_name = self._parse_pc_games(pc_game["title"])
 
             if pc_clean_name in search_name:
-                return {
-                    "Pricecharting-nimi": pc_clean_name,
-                    "CIB-hinta": pc_game["cib_price"],
-                    "Pricechart linkki": pc_game["link"],
-                    "Tori-hinta": tori_price
-                }
+                if tori_price is None or tori_price == "Tarjoa":
+                    good_deal = True
+                else:
+                    try:
+                        p_price = float(pc_game["cib_price"])
+                        t_price = float(tori_price)
+
+                        if t_price <= (p_price * 0.80):
+                            good_deal = True
+                        else:
+                            good_deal = False
+                    except ValueError:
+                        good_deal = True
+                if good_deal:
+                    return {
+                        "Pricecharting-nimi": pc_clean_name,
+                        "CIB-hinta": pc_game["cib_price"],
+                        "Pricechart linkki": pc_game["link"],
+                        "Tori-hinta": tori_price
+                    }
+                else:
+                    return None
         return None
 
 
