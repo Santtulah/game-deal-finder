@@ -1,0 +1,17 @@
+# --- PYTHON ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# --- SALAISUUDET ---
+.env
+
+# --- PROJEKTIN OMA DATA ---
+data/seen_ads.json
+data/tori_games.json
+
+# --- EDITORIT ---
+.vscode/
+.idea/
