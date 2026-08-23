@@ -1,15 +1,29 @@
+
+import os
+from dotenv import load_dotenv
+# Lataa .env -tiedoston muuttujat
+load_dotenv()
 import json
 from scrapers.tori import ToriScraper
 from matching.matcher import GameMatcher
+from notifications.discord import DiscordNotifier
 from pathlib import Path
 import time
 import random
+
 
 CURRENT_DIR = Path(__file__).resolve().parent
 DATA_DIR = CURRENT_DIR.parent / "data"
 SEEN_ADS_PATH = DATA_DIR / "seen_ads.json"
 
+
 if __name__ == "__main__":
+    #HAETAAN ASETUKSET JA LUODAAN TYÖKALUT
+    WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
+    if not WEBHOOK_URL:
+        raise ValueError("DISCORD_WEBHOOK_URL puuttuu .env -tiedostosta!")
+    notifier = DiscordNotifier(webhook_url=WEBHOOK_URL)
+
     pc_path = DATA_DIR / "pricecharting_games.json"
     # tori_path = DATA_DIR / "tori_games.json"
 
@@ -34,7 +48,7 @@ if __name__ == "__main__":
                 
                 link = ad.get("link")
                 if not link or link in seen_links:
-                                    continue
+                    continue
                 ad["description"] = scraper.scrape_ad_description(link)
 
                 delay= random.uniform(2.0, 4.5)
@@ -44,12 +58,16 @@ if __name__ == "__main__":
                 # Etsitään osumia otsikosta
                 match = matcher.find_match(ad["title"])
 
+
                 if match:
+
                     print(">>> ARVOPELI LÖYTYNYT OTSIKOSTA! <<<")
                     print(f"Ilmoitus: {ad['title']}")
                     print(f"Peli: {match['Pricecharting-nimi']}")
                     print(f"Torin pyynti: {match['Tori-hinta']} | CIB-hinta {match['CIB-hinta']}")
                     print(f"Linkki: {ad.get('link')}\n")
+
+                    notifier.send_alert(ad['title'], match['Pricecharting-nimi'], match['Tori-hinta'], match['CIB-hinta'], ad.get('link'))
 
                 # Etsitään osumia kuvauksesta
                 elif "description" in ad:
@@ -61,6 +79,9 @@ if __name__ == "__main__":
                             print(f"Peli: {desc_match['Pricecharting-nimi']}")
                             print(f"Torin pyynti {desc_match['Tori-hinta']} | CIB-hinta {desc_match['CIB-hinta']}")
                             print(f"Linkki: {ad.get('link')}\n")
+
+                            notifier.send_alert(ad['title'], desc_match['Pricecharting-nimi'], desc_match['Tori-hinta'], desc_match['CIB-hinta'], ad.get('link'))
+                            break
                 seen_links.append(link)
             with open(SEEN_ADS_PATH, "w", encoding="utf-8") as f:
                 json.dump(seen_links, f)
@@ -68,3 +89,5 @@ if __name__ == "__main__":
         
     except Exception as e:
         print(f"Ohjelma kaatui virheeseen: {e}")
+    notifier.send_alert("Testi-ilmoitus", "Testipeli", "10", "100", "https://tori.fi")
+    
