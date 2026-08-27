@@ -2,7 +2,7 @@
 
 Tämä on Pythonilla toteutettu automaatiotyökalu, joka seuraa Tori.fi-kauppapaikkaa retropeleihin (esim. PS2-pelit) liittyen. Ohjelma vertaa myynti-ilmoitusten hintoja PriceCharting-tietokannan markkina-arvoihin ja lähettää automaattisen hälytyksen Discordiin, jos se tunnistaa arvokkaan pelin.
 
-Projekti toimii erinomaisena työnäytteenä web-skraappauksesta, datan prosessoinnista, API-integraatioista (Discord Webhooks) ja modulaarisesta ohjelmistoarkkitehtuurista.
+Projekti toimii työnäytteenä web-skraappauksesta, datan prosessoinnista, API-integraatioista (Discord Webhooks) ja modulaarisesta ohjelmistoarkkitehtuurista.
 
 ## Ominaisuudet
 
