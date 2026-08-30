@@ -31,6 +31,14 @@ The code follows a clean, object-oriented structure (Separation of Concerns), wh
    pip install -r requirements.txt
 ---
 
+## Future Development
+
+The project is designed to be extensible. The following features are planned for future versions:
+
+- **Support for New Marketplaces:** Thanks to the modular architecture, adding new scrapers (e.g., `EbayScraper` or `HuutoNetScraper`) to the system is easy without altering the core logic.
+- **Fuzzy Matching:** Improving text recognition (e.g., using the `thefuzz` library) so the program identifies games even with slight misspellings or abbreviations by the seller.
+- **User Interface (Dashboard):** Building a simple web interface for tracking and visualizing statistics on the games found.
+
 # Retro Game Value Scanner
 
 Tämä on Pythonilla toteutettu automaatiotyökalu, joka seuraa Tori.fi-kauppapaikkaa retropeleihin (esim. PS2-pelit) liittyen. Ohjelma vertaa myynti-ilmoitusten hintoja PriceCharting-tietokannan markkina-arvoihin ja lähettää automaattisen hälytyksen Discordiin, jos se tunnistaa arvokkaan pelin.
